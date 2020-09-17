@@ -301,14 +301,13 @@ class Spaceship {
       ---------------`);
   }
 }
-
-
 // extend class to my spaceship & alien spaceships
 // my spaceship -- option to retreat, name prop
 class MySpaceship extends Spaceship {
   constructor(name, hull=20, firepower=5, accuracy=0.7) {
     super(name, hull, firepower, accuracy);
   }
+
   retreat() {
     console.log('RETREAT!');
     game.playing = false;
@@ -328,7 +327,6 @@ class MySpaceship extends Spaceship {
       /\/\/\/\/\/\/\/\/\/\
       /\/\/\/\/\/\/\/\/\/\
       `)
-      // game.playing = false;
       return false;
     }
     return true;
@@ -341,18 +339,29 @@ class AlienSpaceship extends Spaceship {
   }
   // check hull, if below 0, shift ship from alienShips
   // if alienships is empty, game over
+
   checkHull() {
     if (this.getHull() <= 0) {
       console.log(`
          ---------------
-         -Alien Ship ${ship.name} DESTROYED-
+         -Alien Ship ${this.name} DESTROYED-
          --------------
       `)
-      if (this.alienShips.length <= 0) {
-        // game.playing = false;
-        return false;
+      
+      // prompt for player choice when one ship has been destroyed
+      let attackAgain = prompt(`
+      Alien Ship ${this.name} has been destroyed!
+      Attack next ship or retreat?
+      attack: a
+      retreat: r
+      `)
+      if (attackAgain.toLowerCase() === 'r') {
+        game.playing = false;
+        game.youWin = false;
       }
-      this.alienShips.shift();
+
+      return false;
+
     }
     return true;
   }
@@ -369,9 +378,11 @@ class AlienSpaceshipFactory {
     let accuracy;
     let name;
     let newShip;
+
     for (let i = 0; i < num; i++) {
-      hull = Math.floor(Math.random() * (6-2) + 2);
-      firepower = Math.floor(Math.random() * (4-2) + 2);
+
+      hull = Math.floor(Math.random() * (6-3) + 3) + 1;
+      firepower = Math.floor(Math.random() * (4-2) + 2) + 1;
       accuracy = Math.random() * (.8-.6) + .6;
       name = this.alienShips.length + 1;
 
@@ -391,27 +402,23 @@ class AlienSpaceshipFactory {
     })
     return this.alienShips;
   }
-  // checkHull() {
-  //   if (this.getHull() <= 0) {
-  //     console.log(`
-  //        ---------------
-  //        -Alien Ship ${ship.name} DESTROYED-
-  //        --------------
-  //     `)
-  //     if (this.alienShips.length <= 0) {
-  //       // game.playing = false;
-  //       return false;
-  //     }
-  //     this.alienShips.shift();
-  //   }
-  //   return true;
-  // }
+  checkHorde() {
+    return this.alienShips.length > 0;
+  }
+  removeFromHorde() {
+    this.alienShips.shift();                    // has to happen in the factory...
+    // check if there are more alien ships
+    if (this.alienShips.length <= 0) {
+      return false;
+    }
+  }
+
 }
 
-// const USS_Assembly = new MySpaceship('USS Assembly');
-// USS_Assembly.displayStats();
-// console.log(USS_Assembly);
-// console.log(USS_Assembly.checkHull());
+const USS_Assembly = new MySpaceship('USS Assembly');
+USS_Assembly.displayStats();
+console.log(USS_Assembly);
+console.log(USS_Assembly.checkHull());
 
 
 const alienHorde = new AlienSpaceshipFactory();
@@ -419,7 +426,13 @@ alienHorde.generateShip(6);
 alienHorde.displayHorde();
 console.log(alienHorde)
 console.log(alienHorde.alienShips)
-// console.log(alienHorde.displayHorde())
+console.log(alienHorde.displayHorde())
+
+const alienShip = alienHorde.alienShips[0];
+console.log(alienShip)
+console.log(alienShip.hull)
+console.log(alienShip.checkHull())
+
 
 
 
@@ -436,23 +449,53 @@ const game = {
     `)
   },
   start() {
+    let youWin = false;
     this.intro();
     playing = true;
-    const USS_Assembly = new MySpaceship('USS Assembly');
+
+    const USS_Assembly = new MySpaceship('USS Assembly');   // generate players
     const alienHorde = new AlienSpaceshipFactory();
     alienHorde.generateShip(6);
+
+    const alienShip = alienHorde.alienShips[0];
+
     while (playing) {
-      if (!USS_Assembly.checkHull()) {
+
+      if (!USS_Assembly.checkHull()) {                    // hull is 0 or less
         this.playing = false;
       } else {
-        USS_Assembly.attack(alienHorde.alienShips[0]);
-        if (!alienHorde.alienShips[0].checkHull()) {
-          this.playing = false;
+        USS_Assembly.displayStats();
+        USS_Assembly.attack(alienShip);
+
+        if (alienShip.checkHull()) {      // if alien ship not destroyed
+          alienShip.displayStats();
+          alienShip.attack(USS_Assembly);
+        } else {
+          alienHorde.removeFromHorde();
+          if (!alienHorde.checkHorde()) {
+            youWin = true;
+            this.playing = false;
+          }
         }
       }
     }
+    this.winner(youWin);
   },
+  winner(win) {
+    if (win) {
+      console.log(`
+   /\/\/\/\/\/\/\/\/\/\
+   /\/\/\/\/\/\/\/\/\/\
+         YOU WIN
+   /\/\/\/\/\/\/\/\/\/\
+   /\/\/\/\/\/\/\/\/\/\
+   `)
+    }
+  }
 }
+
+
+game.start();
 // intro ~~
 
 // while there are ships
