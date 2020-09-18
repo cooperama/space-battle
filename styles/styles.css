@@ -1,3 +1,74 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
-  background-color: aliceblue;
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;;
+  background: url('/Users/homefolder/sei/deliverables/space-battle/images/nasa-rTZW4f02zY8-unsplash.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
 } 
+
+
+h1 {
+  margin-top: 0;
+  padding-top: 100px;
+  top: 0;
+  font-family: 'Fugaz One', sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 100px;
+  color: rgba(181, 198, 245, 0.911);
+  text-shadow: -2px 2px 5px rgb(28, 0, 41);
+}
+
+
+.begin {
+  display: block;
+  margin: 0 auto;
+  width: 150px;
+  height: 50px;
+  background: none;
+  border: none;
+  font-size: 2.2rem;
+  font-weight: 900;
+  text-shadow: 0 0 5px rgb(224, 224, 224);
+}
+
+.begin:hover {
+  cursor: crosshair;
+  text-shadow: -3px -5px 15px rgb(245,177,85);
+  letter-spacing: 2.5px;
+
+  transition: 
+    text-shadow 1.5s cubic-bezier(.16,.28,.44,1.01),
+    letter-spacing 1.5s cubic-bezier(.16,.28,.44,1.01);
+  -webkit-transition: 
+    text-shadow 1.5s cubic-bezier(.16,.28,.44,1.01),
+    letter-spacing 1.5s cubic-bezier(.16,.28,.44,1.01);
+  -moz-transition: 
+    text-shadow 1.5s cubic-bezier(.16,.28,.44,1.01),
+    letter-spacing 1.5s cubic-bezier(.16,.28,.44,1.01);
+}
+
+.begin:active,
+.begin:focus {
+  color: rgba(245, 202, 85, 0.7);
+  text-shadow: 
+    0 -3px 15px rgba(255, 94, 0, 0.925),
+    -1px 1px 10px rgba(0,0,0,0.9);
+  outline: none;
+}
+
+.start-game {
+/* .begin:active { */
+  position: relative;
+  width: 100vw;
+  letter-spacing: 200px;
+  transition: 
+    width 1.5s cubic-bezier(.16,.28,.44,1.01),
+    letter-spacing 1.5s cubic-bezier(.16,.28,.44,1.01);
+}
