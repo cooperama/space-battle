@@ -1,20 +1,15 @@
-console.log('------*-------*-------*------')
-console.log('Space Battle')
-console.log('------*-------*-------*------')
-
-
-// ------------------------------------------------------
-// ------------------------------------------------------
-// ------------------------------------------------------
-// ------------------------------------------------------
-
-
-
-const begin = document.getElementById('begin');
-
+console.log('-------*-------*------*------*-------*-------*------*-------*-------*------')
+console.log('-------*-------*------*------*     Type      *------*-------*-------*------')
+console.log('\n');
+console.log(`                             "  game.start() "`)
+console.log('\n');
+console.log('-------*-------*------*------* and hit enter *------*-------*-------*------')
+console.log('-------*-------*------*------*   to  begin!  *------*-------*-------*------')
+console.log('-------*-------*------*------*-------*-------*------*-------*-------*------')
 
 // ------------------------------------------------------
 // ------------------------------------------------------
+//    CLASS DECLARATIONS
 // ------------------------------------------------------
 // ------------------------------------------------------
 
@@ -133,8 +128,7 @@ class AlienSpaceshipFactory {
                 hull: ${ship.hull}
                 fire power: ${ship.firepower}
                 ---------------`);
-    })
-    return this.alienShips;
+    });
   }
   isHordeAlive() {
     return this.alienShips.length > 0;
@@ -150,7 +144,12 @@ class AlienSpaceshipFactory {
 
 
 
-// GAME PLAY
+// ------------------------------------------------------
+// ------------------------------------------------------
+//    GAME PLAY
+// ------------------------------------------------------
+// ------------------------------------------------------
+
 const game = {
   playing: false,
   hull: 20,
@@ -158,6 +157,7 @@ const game = {
   accuracy: 0.7,
   youWin: false,
   retreat: false,
+  
   intro() {
     console.log(`
     Earth has been attacked by a horde of aliens! You are the captain of the USS Assembly, on a mission to destroy every last alien ship.
@@ -190,7 +190,7 @@ const game = {
     
     this.intro();
 
-    prompt('Are you ready?');
+    alert('Ready or not...');
 
     console.log(`%c
     ********************************
@@ -206,7 +206,7 @@ const game = {
 
     alienHorde.displayHorde();
 
-    prompt('Let\'s do it!')
+    alert('... Here they come!')
 
     console.log(`%c
                                             ********************************
@@ -233,9 +233,8 @@ const game = {
 
           // prompt for player choice when one ship has been destroyed
           let attackAgain = prompt(`
-               You destroyed a ship!      
-                     What now?            
-                attack (a)  ||  retreat (r)
+              You destroyed a ship! What now?            
+              retreat (r)  ||  continue (ok)
           `)
           if (attackAgain.toLowerCase() === 'r') {
             this.playing = false;
@@ -311,7 +310,7 @@ const game = {
       } else {
         this.retreatRestart();
       }
-  }
+    } 
   },
   retreatRestart() {
     this.hull += 5;
@@ -326,3 +325,31 @@ const game = {
 
 
 // game.start();
+
+
+
+
+// ------------------------------------------------------
+// ------------------------------------------------------
+//    DOM EVENTS
+// ------------------------------------------------------
+// ------------------------------------------------------
+
+const buttonEl = document.querySelector('.begin');
+
+const open = document.querySelector('.open-console');
+const h1El = document.querySelector('h1');
+
+buttonEl.addEventListener('click', function(e) {
+  e.target.classList.toggle('start-game');
+  h1El.classList.toggle('start');
+  open.classList.toggle('open-console');
+})
+
+buttonEl.addEventListener('mouseover', function() {
+  this.classList.remove('pulsate');
+})
+
+buttonEl.addEventListener('mouseout', function() {
+  this.classList.add('pulsate');
+})
